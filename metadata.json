@@ -1,0 +1,8 @@
+{
+  "name": "Remix OyeDj Music Download \u0026 Streaming Portal",
+  "description": "High-speed music downloading and streaming portal with high-quality audio playback, download manager, offline playback, playlists, and admin controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

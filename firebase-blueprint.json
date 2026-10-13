@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "Track": {
+      "title": "Track",
+      "description": "Music song track with audio details and SEO slug",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "slug": { "type": "string" },
+        "title": { "type": "string" },
+        "originalArtist": { "type": "string" },
+        "remixer": { "type": "string" },
+        "category": { "type": "string" },
+        "categorySlug": { "type": "string" },
+        "duration": { "type": "number" },
+        "sizeMb": { "type": "number" },
+        "bitrate": { "type": "string" },
+        "downloadCount": { "type": "number" },
+        "likesCount": { "type": "number" },
+        "audioUrl": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "releaseYear": { "type": "string" },
+        "addedDate": { "type": "string" },
+        "tags": { "type": "array" },
+        "isTrending": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["published", "draft", "unlisted"] },
+        "metaTitle": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "ogTitle": { "type": "string" },
+        "ogDescription": { "type": "string" },
+        "ogImage": { "type": "string" },
+        "metaKeywords": { "type": "string" }
+      },
+      "required": ["id", "slug", "title", "categorySlug", "addedDate"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Music category folder with SEO slug and track count",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "slug": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "iconName": { "type": "string" },
+        "trackCount": { "type": "number" },
+        "isHot": { "type": "boolean" },
+        "folderType": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "metaTitle": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "ogTitle": { "type": "string" },
+        "ogDescription": { "type": "string" },
+        "ogImage": { "type": "string" },
+        "metaKeywords": { "type": "string" }
+      },
+      "required": ["id", "slug", "name"]
+    },
+    "SitemapMeta": {
+      "title": "SitemapMeta",
+      "description": "Metadata regarding the generated sitemap and last indexation",
+      "type": "object",
+      "properties": {
+        "lastUpdated": { "type": "string" },
+        "totalUrls": { "type": "number" },
+        "songCount": { "type": "number" },
+        "categoryCount": { "type": "number" }
+      },
+      "required": ["lastUpdated", "totalUrls"]
+    }
+  },
+  "firestore": {
+    "/tracks/{trackId}": {
+      "schema": { "$ref": "#/entities/Track" },
+      "description": "Collection of published music tracks"
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Collection of music categories and folders"
+    },
+    "/sitemap_meta/{metaId}": {
+      "schema": { "$ref": "#/entities/SitemapMeta" },
+      "description": "Metadata tracking sitemap generation state"
+    }
+  }
+}

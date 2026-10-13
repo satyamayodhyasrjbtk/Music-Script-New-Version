@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny global catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidTrack(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.slug is string && data.slug.size() <= 150
+        && data.title is string && data.title.size() <= 200
+        && data.categorySlug is string && data.categorySlug.size() <= 100;
+    }
+
+    function isValidCategory(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.slug is string && data.slug.size() <= 100
+        && data.name is string && data.name.size() <= 150;
+    }
+
+    // Tracks collection: publicly readable for music listening, streaming, and SEO crawling
+    match /tracks/{trackId} {
+      allow read: if true;
+      allow create: if isValidId(trackId) && isValidTrack(request.resource.data);
+      allow update: if isValidId(trackId) && isValidTrack(request.resource.data);
+      allow delete: if isValidId(trackId);
+    }
+
+    // Categories collection: publicly readable for folder navigation and SEO crawling
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create: if isValidId(categoryId) && isValidCategory(request.resource.data);
+      allow update: if isValidId(categoryId) && isValidCategory(request.resource.data);
+      allow delete: if isValidId(categoryId);
+    }
+
+    // Sitemap metadata collection: public read for search engine indexing stats
+    match /sitemap_meta/{metaId} {
+      allow read: if true;
+      allow write: if isValidId(metaId);
+    }
+  }
+}
